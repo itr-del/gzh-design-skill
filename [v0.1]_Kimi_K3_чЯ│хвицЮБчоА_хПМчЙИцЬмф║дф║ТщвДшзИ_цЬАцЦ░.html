@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kimi K3 · 石墨极简 · 专业版/白话版切换预览</title>
+<style>
+  body{margin:0;background:#eef0f2;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;-webkit-text-size-adjust:100%;}
+  .gzh-toolbar{position:fixed;top:0;left:0;right:0;height:54px;background:#ffffff;box-shadow:0 1px 10px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:99;}
+  .gzh-left{display:flex;align-items:center;gap:10px;}
+  .gzh-switch{display:inline-flex;border:1.5px solid #E4E4E7;border-radius:8px;overflow:hidden;}
+  .gzh-switch button{border:0;padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;background:#fff;color:#71717A;transition:all .15s;}
+  .gzh-switch button.active{background:#27272A;color:#fff;}
+  .gzh-switch button:hover:not(.active){background:#F4F4F5;}
+  .gzh-copy{background:#52525B;color:#fff;border:0;border-radius:9px;padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(82,82,91,.28);white-space:nowrap;transition:transform .08s,background .15s;}
+  .gzh-copy:hover{background:#3F3F46;}
+  .gzh-copy:active{transform:translateY(1px);}
+  .gzh-toast{position:fixed;top:66px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:11px 20px;border-radius:10px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:88vw;text-align:center;}
+  .gzh-toast.show{opacity:1;}
+  .gzh-stage{max-width:700px;margin:78px auto 64px;padding:0 8px;}
+  .version-content{display:none;}
+  .version-content.active{display:block;}
+  @media(max-width:520px){.gzh-switch button{padding:7px 12px;font-size:12px;}.gzh-copy{padding:10px 14px;font-size:13px;}}
+</style>
+</head>
+<body>
+<div class="gzh-toolbar">
+  <div class="gzh-left">
+    <div class="gzh-switch">
+      <button id="btn-pro" class="active" onclick="switchVersion('pro')">专业版</button>
+      <button id="btn-plain" onclick="switchVersion('plain')">白话版</button>
+    </div>
+  </div>
+  <button class="gzh-copy" id="gzhCopyBtn" onclick="gzhCopy()">📋 复制到公众号</button>
+</div>
+<div class="gzh-toast" id="gzhToast"></div>
+<div class="gzh-stage">
+  <div id="pro-content" class="version-content active">
+<section style="max-width:677px;margin:0 auto;background:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;color:#52525B;line-height:1.8;letter-spacing:0.3px;overflow-x:hidden;">
+
+  <!-- 1. 开头引言卡片 -->
+  <section style="margin:10px 10px 40px;padding:32px 24px 24px;border-top:1px solid #E4E4E7;border-bottom:1px solid #E4E4E7;background:#FFFFFF;">
+    <p style="font-size:11px;color:#A1A1AA;letter-spacing:2px;margin:0 0 18px;font-weight:400;">
+      <span leaf="">QUOTE · 2026.07.16</span>
+    </p>
+    <p style="font-size:18px;font-weight:700;color:#27272A;margin:0 0 8px;line-height:1.7;letter-spacing:0.5px;">
+      <span leaf="">2.8 万亿参数的开源模型，第一次把综合能力推到</span>
+      <span style="border-bottom:2px solid #52525B;"><span leaf="">闭源旗舰的门口</span></span>
+      <span leaf="">，权重 7 月 27 日就放。</span>
+    </p>
+    <p style="text-align:right;font-size:12px;color:#A1A1AA;margin:16px 0 0;letter-spacing:1px;">
+      <span leaf="">—— Kimi K3 · 月之暗面</span>
+    </p>
+  </section>
+
+  <!-- 2. 前言正文 -->
+  <section style="padding:0 10px 40px;">
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">7 月 16 日，世界人工智能大会开幕前夕，月之暗面发布 </span><strong style="color:#27272A;"><span leaf="">Kimi K3</span></strong><span leaf="">。2.8 万亿参数、100 万 token 上下文、原生视觉——这不是常规迭代，而是开源阵营第一次在「规模 + 能力」上正面逼近 </span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">Claude 与 GPT</span></span><span leaf=""> 的闭源旗舰。</span>
+    </p>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">更关键的是，它宣布 </span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">7 月 27 日释放权重</span></span><span leaf="">。几天后你就能在自己机器上跑一个接近顶级闭源水平的模型。这篇文章用 6 分钟帮你认清：它到底是什么、强在哪、值不值得现在上车。</span>
+    </p>
+  </section>
+
+  <!-- 3. 前言导读 -->
+  <section style="padding:0 10px 40px;">
+    <p style="font-size:11px;color:#A1A1AA;margin:0 0 16px;letter-spacing:2px;">
+      <span leaf="">本文看点</span>
+    </p>
+    <section style="display:flex;justify-content:space-between;">
+      <section style="flex:1;background:#FAFAFA;border-top:1px solid #E4E4E7;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;font-weight:500;margin:0 0 8px;letter-spacing:1px;"><span leaf="">01</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0;line-height:1.5;"><span leaf="">2.8T + KDA 架构</span></p>
+      </section>
+      <section style="flex:1;background:#FAFAFA;border-top:1px solid #E4E4E7;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;font-weight:500;margin:0 0 8px;letter-spacing:1px;"><span leaf="">02</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0;line-height:1.5;"><span leaf="">100 万上下文实测</span></p>
+      </section>
+      <section style="flex:1;background:#FAFAFA;border-top:1px solid #E4E4E7;padding:18px 12px 16px;">
+        <p style="font-size:11px;color:#A1A1AA;font-weight:500;margin:0 0 8px;letter-spacing:1px;"><span leaf="">03</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0;line-height:1.5;"><span leaf="">国内三路线对比</span></p>
+      </section>
+    </section>
+  </section>
+
+  <!-- 4. 第一章 01 参数与架构 -->
+  <section style="margin-top:16px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">01</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">ARCHITECTURE</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">参数与架构：2.8T + KDA</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">Kimi K3 是一个 </span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">2.8 万亿参数</span></span><span leaf=""> 的 </span><strong style="color:#27272A;"><span leaf="">MoE（混合专家）</span></strong><span leaf=""> 模型。这个数字的意义在于：它是目前全球参数规模最大的开源模型，也是首个突破 2 万亿级别的开源模型。</span>
+    </p>
+    <p style="font-size:15px;font-weight:800;color:#27272A;margin:28px 0 14px;padding-left:12px;border-left:3px solid #52525B;line-height:1.4;">
+      <span leaf="">真正的技术拐点：KDA</span>
+    </p>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">规模只是表象。K3 的核心是两个月之暗面自研的架构创新——</span><strong style="color:#27272A;"><span leaf="">Kimi Delta Attention</span></strong><span leaf="">（混合线性注意力）与 </span><strong style="color:#27272A;"><span leaf="">注意力残差</span></strong><span leaf="">。前者把注意力复杂度从平方降到线性，让长上下文不再「烧显存」；后者在线性注意力上补回了长距离依赖的记忆，避免长文本「读到后面忘了前面」。</span>
+    </p>
+    <section style="border-left:3px solid #52525B;padding:16px 0 16px 24px;margin:0 0 28px;">
+      <p style="font-size:16px;font-weight:700;color:#27272A;margin:0;line-height:1.7;letter-spacing:0.5px;">
+        <span leaf="">「KDA 是 K3 敢做 100 万上下文的底层原因」</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">KDA + 注意力残差的组合，等于用更低的计算成本换来了更长的有效记忆——这是它和一味堆参数的旧路线</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">最大的不同</span></span><span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 5. 第二章 02 长上下文 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">02</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">LONG CONTEXT</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">长上下文：100 万 token 意味着什么</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">100 万 token 约等于 </span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">75 万中文字</span></span><span leaf="">，或一整本长篇小说加几十份研报。对普通用户来说，这意味着你可以把一整个项目代码库、一整份合同、一整套论文一次性丢进去问答。</span>
+    </p>
+    <section style="display:flex;margin:0 0 28px;">
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">场景</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0 0 6px;line-height:1.4;"><span leaf="">整本小说</span></p>
+        <p style="font-size:12px;color:#71717A;margin:0;line-height:1.6;"><span leaf="">一次读完全文</span></p>
+      </section>
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">场景</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0 0 6px;line-height:1.4;"><span leaf="">整个代码库</span></p>
+        <p style="font-size:12px;color:#71717A;margin:0;line-height:1.6;"><span leaf="">跨文件问答</span></p>
+      </section>
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">场景</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0 0 6px;line-height:1.4;"><span leaf="">整套研报</span></p>
+        <p style="font-size:12px;color:#71717A;margin:0;line-height:1.6;"><span leaf="">长文对比</span></p>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">过去长上下文模型的最大痛点是「长但记不住」。KDA 的设计目标正是解决这个问题——线性复杂度让长文本推理成本可控，</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">注意力残差保证远端信息不被稀释</span></span><span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 6. 第三章 03 能力实测 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">03</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">CAPABILITIES</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">能力实测：原生视觉 + Arena 黑马 Kivine</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">K3 原生支持视觉理解，不是外接视觉塔的拼缝方案。图片、图表、截图都能直接进上下文一起推理。</span>
+    </p>
+    <section style="background:#FAFAFA;border:1px solid #E4E4E7;padding:20px 22px;margin:0 0 28px;">
+      <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:2px;font-weight:500;">
+        <span leaf="">REFERENCE</span>
+      </p>
+      <p style="font-size:15px;color:#3F3F46;margin:0;line-height:1.8;text-align:justify;">
+        <span leaf="">发布前，一个叫 </span><strong style="color:#27272A;"><span leaf="">Kivine</span></strong><span leaf=""> 的匿名模型在 Arena 连刷几天高分，能产出高完成度的网页、3D 场景和小游戏。后来被证实就是 K3 的影子账号——官方用这种方式做了一次「隐身发布」的能力验证。</span>
+      </p>
+    </section>
+    <section style="border-left:3px solid #52525B;padding:16px 0 16px 24px;margin:0 0 28px;">
+      <p style="font-size:16px;font-weight:700;color:#27272A;margin:0;line-height:1.7;letter-spacing:0.5px;">
+        <span leaf="">「Kivine 的爆火，是 K3 最硬的一次第三方背书」</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">这招很聪明：不靠官方自夸，让社区在不知情的情况下</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">用脚投票</span></span><span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 7. 第四章 04 性能对标 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">04</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">BENCHMARK</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">性能对标：逼近 Fable 5 / GPT-5.6</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">官方测评显示，K3 综合智能水平仅次于 </span><strong style="color:#27272A;"><span leaf="">Claude Fable 5</span></strong><span leaf=""> 与 </span><strong style="color:#27272A;"><span leaf="">GPT-5.6</span></strong><span leaf=""> 的闭源旗舰，并在部分编程与 Agent 任务上超越 Opus 4.8。</span>
+    </p>
+    <section style="margin:0 0 24px;overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead>
+          <tr>
+            <th style="background:#27272A;color:#fff;font-weight:700;padding:8px 12px;text-align:left;"><span leaf="">能力维度</span></th>
+            <th style="background:#27272A;color:#fff;font-weight:700;padding:8px 12px;text-align:left;"><span leaf="">Kimi K3</span></th>
+            <th style="background:#27272A;color:#fff;font-weight:700;padding:8px 12px;text-align:left;"><span leaf="">闭源旗舰</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">综合智能</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">逼近 Fable 5 / GPT-5.6</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">第一梯队</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">编程 / Agent</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">部分任务超 Opus 4.8</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">顶级</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">上下文窗口</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">100 万 token（领先）</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">通常 20–30 万</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">是否开源</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">是（7/27 放权重）</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">否</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <p style="font-size:15px;margin:0 10px 24px;text-align:center;color:#27272A;font-weight:700;letter-spacing:1px;border-top:1px solid #E4E4E7;border-bottom:1px solid #E4E4E7;padding:14px 10px;">
+      <span leaf="">差距从「一代」缩小到「数周」——这是 K3 对行业叙事最大的冲击</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 8. 第五章 05 价格与取舍 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">05</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">PRICING</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">价格与取舍：对标 Sonnet，但强制 Thinking</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">API 定价对标 </span><strong style="color:#27272A;"><span leaf="">Claude Sonnet</span></strong><span leaf=""> 档位，对开发者很友好。但有一个现实取舍：K3 </span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">强制开启 Thinking（推理）模式</span></span><span leaf="">。</span>
+    </p>
+    <section style="background:#FAFAFA;border-top:2px solid #27272A;padding:18px 22px;margin:0 0 24px;">
+      <p style="font-size:11px;color:#A1A1AA;margin:0 0 10px;letter-spacing:2px;font-weight:500;">
+        <span leaf="">NOTE</span>
+      </p>
+      <p style="font-size:14px;color:#52525B;margin:0;line-height:1.8;">
+        <span leaf="">强制 Thinking 模式下，首字延迟和总耗时明显更长。需要实时响应的场景（如对话插件、流式 UI）要预留等待。</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">换句话说，K3 适合「重思考」任务（深度分析、长文写作、复杂 Agent），</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">不适合「秒回」场景</span></span><span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 9. 第六章 06 预训练算力 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">06</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">PRE-TRAINING COMPUTE</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">预训练算力：到底烧不烧顶级卡</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">先给结论：预训练一个大模型，确实要 </span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">大量顶级算力</span></span><span leaf="">。训练 2.8 万亿参数的 MoE，背后是成千上万张高端 GPU（H100 / H800 级别）连续跑上数周——这不是小作坊能做的事。</span>
+    </p>
+    <p style="font-size:15px;font-weight:800;color:#27272A;margin:28px 0 14px;padding-left:12px;border-left:3px solid #52525B;line-height:1.4;">
+      <span leaf="">两个被混淆的问题</span>
+    </p>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">但「需要大量算力」不等于「只能靠堆顶级卡」。这是两件事：一是 </span><strong style="color:#27272A;"><span leaf="">绝对量</span></strong><span leaf="">——模型越大，预训练总算力越大，scale law 至今还成立；二是 </span><strong style="color:#27272A;"><span leaf="">效率</span></strong><span leaf="">——同样的钱能买到多少能力，差距极大，这里拼的是算法和数据。</span>
+    </p>
+    <section style="border-left:2px solid #E4E4E7;padding:12px 0 12px 20px;margin:0 0 24px;">
+      <p style="font-size:13px;color:#A1A1AA;margin:0;line-height:1.8;text-align:justify;">
+        <span leaf="">换句话说：算力门槛还在，但它从「谁卡多」变成了「卡 + 算法 + 数据」的组合效率。</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">降本主要靠三个杠杆：</span>
+    </p>
+    <section style="margin-bottom:24px;">
+      <section style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#27272A;color:#fff;font-size:12px;font-weight:700;border-radius:50%;flex-shrink:0;margin-top:2px;"><span leaf="">1</span></span>
+        <p style="font-size:15px;color:#52525B;margin:0;line-height:1.8;flex:1;"><span leaf="">架构效率：KDA 这类线性注意力，把长上下文成本从平方打到线性；MoE 只激活部分专家，训练和推理都更省。</span></p>
+      </section>
+      <section style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#27272A;color:#fff;font-size:12px;font-weight:700;border-radius:50%;flex-shrink:0;margin-top:2px;"><span leaf="">2</span></span>
+        <p style="font-size:15px;color:#52525B;margin:0;line-height:1.8;flex:1;"><span leaf="">数据效率：高质量、去重、配比好的数据，能让更小的模型追上更大的——DeepSeek 一路就在证明这件事。</span></p>
+      </section>
+      <section style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#27272A;color:#fff;font-size:12px;font-weight:700;border-radius:50%;flex-shrink:0;margin-top:2px;"><span leaf="">3</span></span>
+        <p style="font-size:15px;color:#52525B;margin:0;line-height:1.8;flex:1;"><span leaf="">训练策略：并行、混合精度、蒸馏、课程学习，把每一张卡的利用率拉满。</span></p>
+      </section>
+    </section>
+    <section style="border-left:3px solid #F97316;padding:14px 0 14px 22px;margin:0 0 24px;">
+      <p style="font-size:14px;font-weight:700;color:#27272A;margin:0;line-height:1.8;">
+        <span leaf="">预训练仍要顶级算力打底，但决定权正从「堆卡」转向「组合效率」</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">这正是普通人的机会：算力门槛在降、开源权重在放，所以你才能在 7 月 27 日之后，</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">自己跑起一个接近顶级的模型</span></span><span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 10. 第七章 07 开发者上手 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">07</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">GET STARTED</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">开发者怎么用：7/27 放权重 + API</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">权重 7 月 27 日释放，届时可在 Hugging Face 与官方渠道获取。API 已开放，按 Sonnet 档计费。Kimi API 兼容 OpenAI 协议，</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">迁移成本极低</span></span><span leaf="">。</span>
+    </p>
+    <section style="display:flex;margin:0 0 24px;">
+      <section style="flex:1;border:1px solid #E4E4E7;padding:22px 16px;margin-right:8px;text-align:center;">
+        <p style="font-size:24px;font-weight:900;color:#27272A;margin:0 0 6px;line-height:1;letter-spacing:-1px;"><span leaf="">7/27</span></p>
+        <p style="font-size:11px;color:#A1A1AA;margin:0;letter-spacing:1px;"><span leaf="">权重开源</span></p>
+      </section>
+      <section style="flex:1;border:1px solid #E4E4E7;padding:22px 16px;text-align:center;">
+        <p style="font-size:24px;font-weight:900;color:#27272A;margin:0 0 6px;line-height:1;letter-spacing:-1px;"><span leaf="">OpenAI</span></p>
+        <p style="font-size:11px;color:#A1A1AA;margin:0;letter-spacing:1px;"><span leaf="">协议兼容</span></p>
+      </section>
+    </section>
+    <section style="margin:0 0 20px;border-radius:0;overflow:hidden;background:#1E293B;">
+      <section style="display:flex;align-items:center;padding:9px 14px;background:#0F172A;">
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#FF5F56;margin-right:7px;font-size:0;line-height:0;overflow:hidden;">.</span>
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#FFBD2E;margin-right:7px;font-size:0;line-height:0;overflow:hidden;">.</span>
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#27C93F;font-size:0;line-height:0;overflow:hidden;">.</span>
+        <span style="margin-left:12px;font-size:12px;color:#64748B;font-family:Consolas,Monaco,monospace;letter-spacing:1px;"><span leaf="">python</span></span>
+      </section>
+      <section style="padding:11px 14px;">
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">from openai import OpenAI</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf=""></span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">client = OpenAI(</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">　　api_key="sk-xxx",</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">　　base_url="https://api.moonshot.cn/v1"</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">)</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf=""></span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">resp = client.chat.completions.create(</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">　　model="kimi-k3",</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">　　messages=[{"role": "user", "content": "用一句话解释 KDA"}]</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">)</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">print(resp.choices[0].message.content)</span></p>
+      </section>
+    </section>
+    <section style="border-left:2px solid #E4E4E7;padding:12px 0 12px 20px;margin:0 0 24px;">
+      <p style="font-size:13px;color:#A1A1AA;margin:0;line-height:1.8;text-align:justify;">
+        <span leaf="">示意代码，需替换 api_key，model 名以官方文档为准。</span>
+      </p>
+    </section>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 11. 第八章 08 国内三路线 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">08</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">THREE DOMESTIC ROUTES</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">国内三路线：DeepSeek·智谱·Kimi 怎么选</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">把 K3 放回国内坐标系：最近两年，头部大模型其实走了三条不同的路。看懂这三条路，比盯着单个榜单更有用——它决定你该把赌注压在谁身上。</span>
+    </p>
+    <section style="display:flex;margin:0 0 28px;">
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">01</span></p>
+        <p style="font-size:14px;font-weight:800;color:#27272A;margin:0 0 4px;line-height:1.4;"><span leaf="">DeepSeek</span></p>
+        <p style="font-size:11px;color:#71717A;margin:0 0 8px;line-height:1.5;"><span leaf="">深度求索</span></p>
+        <p style="font-size:12px;color:#52525B;margin:0;line-height:1.6;"><span leaf="">极致性价比；数据 + 工程把成本打穿</span></p>
+      </section>
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">02</span></p>
+        <p style="font-size:14px;font-weight:800;color:#27272A;margin:0 0 4px;line-height:1.4;"><span leaf="">GLM</span></p>
+        <p style="font-size:11px;color:#71717A;margin:0 0 8px;line-height:1.5;"><span leaf="">智谱 AI</span></p>
+        <p style="font-size:12px;color:#52525B;margin:0;line-height:1.6;"><span leaf="">全栈 AGI + 国产化；多模态 + 国产芯片适配</span></p>
+      </section>
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">03</span></p>
+        <p style="font-size:14px;font-weight:800;color:#27272A;margin:0 0 4px;line-height:1.4;"><span leaf="">Kimi</span></p>
+        <p style="font-size:11px;color:#71717A;margin:0 0 8px;line-height:1.5;"><span leaf="">月之暗面</span></p>
+        <p style="font-size:12px;color:#52525B;margin:0;line-height:1.6;"><span leaf="">长上下文 + 架构创新；KDA 是钥匙</span></p>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">三条路没有对错，只是赌注不同：</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">DeepSeek 赌效率</span></span><span leaf="">，用更少算力做到够用；</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">智谱赌全栈与国产化</span></span><span leaf="">，从模型到芯片一起抓；</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">Kimi 赌长上下文与架构</span></span><span leaf="">，KDA 是这条路的钥匙。</span>
+    </p>
+    <section style="border-left:3px solid #52525B;padding:16px 0 16px 24px;margin:0 0 28px;">
+      <p style="font-size:16px;font-weight:700;color:#27272A;margin:0;line-height:1.7;letter-spacing:0.5px;">
+        <span leaf="">「对开发者而言，三条路意味着三种『便宜又好用』的取舍」</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">要最省成本选 DeepSeek，要做国产化全栈选智谱，要啃超长文档和长程任务选 Kimi。开源权重陆续放出，等于把这三张底牌都</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">摊到了桌面上</span></span><span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 13. 结语章 ∞ -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">∞</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">THE END</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">写在最后</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">Kimi K3 的意义不只是一个强模型，而是把「开源 ≈ 落后」的旧叙事</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">撕开一道口子</span></span><span leaf="">。当顶尖能力开始以开放权重流动，受益的是所有做应用的开发者。</span>
+    </p>
+    <section style="border-left:3px solid #52525B;padding:16px 0 16px 24px;margin:0 0 28px;">
+      <p style="font-size:16px;font-weight:700;color:#27272A;margin:0;line-height:1.7;letter-spacing:0.5px;">
+        <span leaf="">「开源平替闭源的拐点，可能就从 7 月 27 日这批权重开始」</span>
+      </p>
+    </section>
+  </section>
+
+  <!-- 14. END 分割线 -->
+  <section style="padding:0 10px;">
+    <section style="text-align:center;margin:0 0 36px;">
+      <section style="display:flex;align-items:center;justify-content:center;">
+        <span style="height:1px;width:48px;background:#E4E4E7;margin-right:16px;"><span leaf=""><br></span></span>
+        <span style="font-size:10px;color:#A1A1AA;letter-spacing:4px;font-weight:500;"><span leaf="">END</span></span>
+        <span style="height:1px;width:48px;background:#E4E4E7;margin-left:16px;"><span leaf=""><br></span></span>
+      </section>
+    </section>
+  </section>
+
+  <!-- 15. 尾部作者签名 -->
+  <section style="padding:0 10px 24px;">
+    <section style="border-top:1px solid #E4E4E7;padding-top:28px;">
+      <p style="margin-bottom:16px;font-size:15px;line-height:1.8;color:#52525B;text-align:justify;">
+        <span leaf="">我是 {{作者名}}，{{一句话简介，如：热衷于分享 AI 观察与干货}}。</span>
+      </p>
+      <p style="margin-bottom:0;font-size:15px;line-height:1.8;color:#52525B;text-align:justify;">
+        <span leaf="">如果你觉得今天这篇有收获，欢迎</span>
+        <strong style="color:#27272A;"><span leaf="">点赞、在看、转发</span></strong>
+        <span leaf="">三连，我们下篇见。</span>
+      </p>
+    </section>
+  </section>
+
+</section>
+
+  </div>
+  <div id="plain-content" class="version-content">
+<section style="max-width:677px;margin:0 auto;background:#FFFFFF;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;color:#52525B;line-height:1.8;letter-spacing:0.3px;overflow-x:hidden;">
+
+  <!-- 1. 开头引言卡片 -->
+  <section style="margin:10px 10px 40px;padding:32px 24px 24px;border-top:1px solid #E4E4E7;border-bottom:1px solid #E4E4E7;background:#FFFFFF;">
+    <p style="font-size:11px;color:#A1A1AA;letter-spacing:2px;margin:0 0 18px;font-weight:400;">
+      <span leaf="">KIMI K3 · 白话版 · 2026.07.16</span>
+    </p>
+    <p style="font-size:18px;font-weight:700;color:#27272A;margin:0 0 8px;line-height:1.7;letter-spacing:0.5px;">
+      <span leaf="">一个特别聪明的 AI 大脑，跟国外最厉害的差不多，过几天</span>
+      <span style="border-bottom:2px solid #52525B;"><span leaf="">图纸免费放</span></span>
+      <span leaf="">——但自己跑要显卡，在线用要付费。</span>
+    </p>
+    <p style="text-align:right;font-size:12px;color:#A1A1AA;margin:16px 0 0;letter-spacing:1px;">
+      <span leaf="">—— Kimi K3 · 月之暗面</span>
+    </p>
+  </section>
+
+  <!-- 2. 前言正文 -->
+  <section style="padding:0 10px 40px;">
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">7 月 16 日，月之暗面发了个新 AI，叫 </span><strong style="color:#27272A;"><span leaf="">Kimi K3</span></strong><span leaf="">。这玩意儿脑容量特别大，单次能记住一整本书的内容，还能看懂图片。最关键的是：这是头一回，开源 AI 的能力追上了那些</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">要花钱才能用的顶级 AI</span></span><span leaf="">。</span>
+    </p>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">过几天（7 月 27 日），它的「图纸」就免费放出来——意味着你能下载到自己机器上跑，不用再交接口费。但注意：自己跑要显卡，在线调接口也要按量付费，</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">「免费」的是图纸本身</span></span><span leaf="">。这篇文章花你几分钟，帮你搞明白：它到底是啥、厉害在哪、值不值得现在就用。</span>
+    </p>
+  </section>
+
+  <!-- 3. 前言导读 -->
+  <section style="padding:0 10px 40px;">
+    <p style="font-size:11px;color:#A1A1AA;margin:0 0 16px;letter-spacing:2px;">
+      <span leaf="">本文看点</span>
+    </p>
+    <section style="display:flex;justify-content:space-between;">
+      <section style="flex:1;background:#FAFAFA;border-top:1px solid #E4E4E7;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;font-weight:500;margin:0 0 8px;letter-spacing:1px;"><span leaf="">01</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0;line-height:1.5;"><span leaf="">超大号 AI 大脑</span></p>
+      </section>
+      <section style="flex:1;background:#FAFAFA;border-top:1px solid #E4E4E7;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;font-weight:500;margin:0 0 8px;letter-spacing:1px;"><span leaf="">02</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0;line-height:1.5;"><span leaf="">一次聊记一整本书</span></p>
+      </section>
+      <section style="flex:1;background:#FAFAFA;border-top:1px solid #E4E4E7;padding:18px 12px 16px;">
+        <p style="font-size:11px;color:#A1A1AA;font-weight:500;margin:0 0 8px;letter-spacing:1px;"><span leaf="">03</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0;line-height:1.5;"><span leaf="">国内三家怎么选</span></p>
+      </section>
+    </section>
+  </section>
+
+  <!-- 4. 第一章 01 它到底是个啥 -->
+  <section style="margin-top:16px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">01</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">ARCHITECTURE</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">它到底是个啥</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">先说人话：K3 是一个「脑容量特别大」的 AI。你可以理解成它脑子里的</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">神经元连接特别多</span></span><span leaf="">，所以能装的东西特别多。</span>
+    </p>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">它用的是「混合专家」设计——就像请了一堆专家，谁擅长啥就谁出手，不用每次全员上阵。好处是：脑子虽大，但每次只动用一小部分，</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">又快又省</span></span><span leaf="">。</span>
+    </p>
+    <p style="font-size:15px;font-weight:800;color:#27272A;margin:28px 0 14px;padding-left:12px;border-left:3px solid #52525B;line-height:1.4;">
+      <span leaf="">真正厉害的地方：新脑子设计</span>
+    </p>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">以前的 AI，要么记性好但费劲，要么省力但记不住。KDA 这个新设计，两头都要了：</span><strong style="color:#27272A;"><span leaf="">记得久，还不费脑子</span></strong><span leaf="">。</span>
+    </p>
+    <section style="border-left:3px solid #52525B;padding:16px 0 16px 24px;margin:0 0 28px;">
+      <p style="font-size:16px;font-weight:700;color:#27272A;margin:0;line-height:1.7;letter-spacing:0.5px;">
+        <span leaf="">「KDA 是它单次敢记一整本书的底气」</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">等于用更少的脑力，换来了更长的有效记忆——这是它和一味堆参数的旧路线</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">最大的不同</span></span><span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 5. 第二章 02 记性有多长 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">02</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">LONG CONTEXT</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">记性有多长</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">这里说的「记性长」，不是说它跨天跨周还记得你——而是说 </span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">单次对话里</span></span><span leaf="">，你喂进去多少东西，它能同时记住多少。100 万 token 大约等于 75 万个中文字——差不多一整本书。你把一整本书塞给它，它能从头记到尾，不会「读到后面忘了前面」。</span>
+    </p>
+    <section style="display:flex;margin:0 0 28px;">
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">场景</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0 0 6px;line-height:1.4;"><span leaf="">整本小说</span></p>
+        <p style="font-size:12px;color:#71717A;margin:0;line-height:1.6;"><span leaf="">一次读完不丢线</span></p>
+      </section>
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">场景</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0 0 6px;line-height:1.4;"><span leaf="">整个代码库</span></p>
+        <p style="font-size:12px;color:#71717A;margin:0;line-height:1.6;"><span leaf="">全量代码一起看</span></p>
+      </section>
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">场景</span></p>
+        <p style="font-size:13px;font-weight:700;color:#27272A;margin:0 0 6px;line-height:1.4;"><span leaf="">整套研报</span></p>
+        <p style="font-size:12px;color:#71717A;margin:0;line-height:1.6;"><span leaf="">一堆报告一起问</span></p>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">以前的 AI 也有「长记性」的，但要么是硬撑、容易忘，要么贵得吓人。K3 是在单次任务里真记住了，而且</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">还不费劲</span></span><span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 6. 第三章 03 实战表现 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">03</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">CAPABILITIES</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">实战表现</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">K3 能看图，是真看懂那种——不是把图拼凑起来猜，而是真的能理解图里的内容。图片、图表、截图都能直接丢给它。</span>
+    </p>
+    <section style="background:#FAFAFA;border:1px solid #E4E4E7;padding:20px 22px;margin:0 0 28px;">
+      <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:2px;font-weight:500;">
+        <span leaf="">REFERENCE</span>
+      </p>
+      <p style="font-size:15px;color:#3F3F46;margin:0;line-height:1.8;text-align:justify;">
+        <span leaf="">发布前，团队用了个假名字 </span><strong style="color:#27272A;"><span leaf="">Kivine</span></strong><span leaf="">，把它送去参加各种 AI 比赛。结果连刷高分，大家都在猜这是哪家的新货。后来才揭晓：Kivine 就是 K3——官方用这种方式做了一次「隐身发布」的能力验证。</span>
+      </p>
+    </section>
+    <section style="border-left:3px solid #52525B;padding:16px 0 16px 24px;margin:0 0 28px;">
+      <p style="font-size:16px;font-weight:700;color:#27272A;margin:0;line-height:1.7;letter-spacing:0.5px;">
+        <span leaf="">「Kivine 的爆火，是最硬的一次第三方背书」</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">不自吹自擂，让社区</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">用脚投票</span></span><span leaf="">——你行你上，分数说话。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 7. 第四章 04 跟顶级 AI 比怎么样 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">04</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">BENCHMARK</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">跟顶级 AI 比怎么样</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">简单说：综合智能追上了国外最顶级的 AI，部分编程任务还超了。差距从「差一代」缩到了</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">「差几周」</span></span><span leaf="">。</span>
+    </p>
+    <section style="margin:0 0 24px;overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead>
+          <tr>
+            <th style="background:#27272A;color:#fff;font-weight:700;padding:8px 12px;text-align:left;"><span leaf="">能力维度</span></th>
+            <th style="background:#27272A;color:#fff;font-weight:700;padding:8px 12px;text-align:left;"><span leaf="">K3</span></th>
+            <th style="background:#27272A;color:#fff;font-weight:700;padding:8px 12px;text-align:left;"><span leaf="">顶级闭源 AI</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">综合智能</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">追上了</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">原本最强</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">编程</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">部分超了</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">略逊一点</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">记性</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">100 万（领先）</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;"><span leaf="">通常 20～30 万</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">免费与否</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">开源 · 7/27 放图纸</span></td>
+            <td style="padding:8px 12px;border-bottom:1px solid #E4E4E7;color:#52525B;background:#FAFAFA;"><span leaf="">要钱</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <p style="font-size:15px;margin:0 10px 24px;text-align:center;color:#27272A;font-weight:700;letter-spacing:1px;border-top:1px solid #E4E4E7;border-bottom:1px solid #E4E4E7;padding:14px 10px;">
+      <span leaf="">差距从「差一代」缩到「差几周」——这是最大的冲击</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 8. 第五章 05 要不要钱 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">05</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">PRICING</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">钱怎么算</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">先说清楚：图纸（权重）免费，</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">但跑起来不是不要钱</span></span><span leaf="">。自己装着跑，要显卡——模型越大，要的卡越贵；在线调接口，按用了多少字算钱，跟同级别 AI 差不多价。</span>
+    </p>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">另外有个坑你得知道——它被设计成</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">「先想再答」</span></span><span leaf="">，接到问题后会先在脑子里转一圈再开口。好处是答得更准，坏处是开口慢半拍，而且思考部分也算字数、也花钱。</span>
+    </p>
+    <section style="background:#FAFAFA;border-top:2px solid #27272A;padding:18px 22px;margin:0 0 24px;">
+      <p style="font-size:11px;color:#A1A1AA;margin:0 0 10px;letter-spacing:2px;font-weight:500;">
+        <span leaf="">NOTE</span>
+      </p>
+      <p style="font-size:14px;color:#52525B;margin:0;line-height:1.8;">
+        <span leaf="">强制思考模式下，第一个字会比较慢出来。如果你要的是「秒回」那种实时场景，会有等的感觉。适合动脑的重活，不适合闲聊。</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">换句话说，它适合「想清楚再答」的重活，</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">不适合「秒回」场景</span></span><span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 9. 第六章 06 造它要烧很多显卡吗 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">06</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">PRE-TRAINING COMPUTE</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">造它要烧很多显卡吗</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">结论：要，但 </span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">门槛在降</span></span><span leaf="">。训练这么大的 AI，就像盖摩天大楼，得用成千上万块顶级显卡没日没夜跑好几周——这不是小作坊能做的事。</span>
+    </p>
+    <p style="font-size:15px;font-weight:800;color:#27272A;margin:28px 0 14px;padding-left:12px;border-left:3px solid #52525B;line-height:1.4;">
+      <span leaf="">两个经常被搞混的问题</span>
+    </p>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">「要多少显卡」和「花得值不值」是两回事。前者是 </span><strong style="color:#27272A;"><span leaf="">绝对量</span></strong><span leaf="">——模型越大，要的显卡越多；后者是 </span><strong style="color:#27272A;"><span leaf="">效率</span></strong><span leaf="">——同样的钱能买到多少能力，差距极大，这里拼的是算法和数据。</span>
+    </p>
+    <section style="border-left:2px solid #E4E4E7;padding:12px 0 12px 20px;margin:0 0 24px;">
+      <p style="font-size:13px;color:#A1A1AA;margin:0;line-height:1.8;text-align:justify;">
+        <span leaf="">换句话说：显卡门槛还在，但它从「谁卡多」变成了「卡 + 算法 + 数据」的组合效率。</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">三个让它越来越省的杠杆：</span>
+    </p>
+    <section style="margin-bottom:24px;">
+      <section style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#27272A;color:#fff;font-size:12px;font-weight:700;border-radius:50%;flex-shrink:0;margin-top:2px;"><span leaf="">1</span></span>
+        <p style="font-size:15px;color:#52525B;margin:0;line-height:1.8;flex:1;"><span leaf="">脑子设计巧：KDA 省力，干同样的活用更少的卡；混合专家设计，每次只动一小部分。</span></p>
+      </section>
+      <section style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#27272A;color:#fff;font-size:12px;font-weight:700;border-radius:50%;flex-shrink:0;margin-top:2px;"><span leaf="">2</span></span>
+        <p style="font-size:15px;color:#52525B;margin:0;line-height:1.8;flex:1;"><span leaf="">喂的料精：好数据让小脑子也能打出好成绩——DeepSeek 一路就在证明这件事。</span></p>
+      </section>
+      <section style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#27272A;color:#fff;font-size:12px;font-weight:700;border-radius:50%;flex-shrink:0;margin-top:2px;"><span leaf="">3</span></span>
+        <p style="font-size:15px;color:#52525B;margin:0;line-height:1.8;flex:1;"><span leaf="">练法好：并行、精度这些技巧，把每张卡的油水榨干。</span></p>
+      </section>
+    </section>
+    <section style="border-left:3px solid #F97316;padding:14px 0 14px 22px;margin:0 0 24px;">
+      <p style="font-size:14px;font-weight:700;color:#27272A;margin:0;line-height:1.8;">
+        <span leaf="">顶级显卡还得用，但胜负手从「谁卡多」变成「谁脑子好使」</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">正因如此，7 月 27 日之后，有条件的人才能</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">自己跑起一个接近顶级的 AI</span></span><span leaf="">——虽然要够好的显卡，但至少图纸是免费拿的，不用再被接口费卡脖子。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 10. 第七章 07 怎么用上 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">07</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">GET STARTED</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">怎么用上</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">7 月 27 日图纸公开，你能下载到自己机器上装——但 2.8 万亿参数的模型，自己跑要 </span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">相当好的显卡</span></span><span leaf="">，普通电脑带不动。更省事的是直接用在线接口，跟用 ChatGPT 差不多，换个地址就行，按用了多少字付费。</span>
+    </p>
+    <section style="display:flex;margin:0 0 24px;">
+      <section style="flex:1;border:1px solid #E4E4E7;padding:22px 16px;margin-right:8px;text-align:center;">
+        <p style="font-size:24px;font-weight:900;color:#27272A;margin:0 0 6px;line-height:1;letter-spacing:-1px;"><span leaf="">7/27</span></p>
+        <p style="font-size:11px;color:#A1A1AA;margin:0;letter-spacing:1px;"><span leaf="">图纸免费 · 自装要显卡</span></p>
+      </section>
+      <section style="flex:1;border:1px solid #E4E4E7;padding:22px 16px;text-align:center;">
+        <p style="font-size:24px;font-weight:900;color:#27272A;margin:0 0 6px;line-height:1;letter-spacing:-1px;"><span leaf="">兼容</span></p>
+        <p style="font-size:11px;color:#A1A1AA;margin:0;letter-spacing:1px;"><span leaf="">换地址就能跑</span></p>
+      </section>
+    </section>
+    <section style="margin:0 0 20px;border-radius:0;overflow:hidden;background:#1E293B;">
+      <section style="display:flex;align-items:center;padding:9px 14px;background:#0F172A;">
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#FF5F56;margin-right:7px;font-size:0;line-height:0;overflow:hidden;">.</span>
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#FFBD2E;margin-right:7px;font-size:0;line-height:0;overflow:hidden;">.</span>
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#27C93F;font-size:0;line-height:0;overflow:hidden;">.</span>
+        <span style="margin-left:12px;font-size:12px;color:#64748B;font-family:Consolas,Monaco,monospace;letter-spacing:1px;"><span leaf="">python</span></span>
+      </section>
+      <section style="padding:11px 14px;">
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#94A3B8;"><span leaf=""># 装一下工具</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">from openai import OpenAI</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf=""></span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#94A3B8;"><span leaf=""># 连到 Kimi 的服务器（不是 OpenAI 的）</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">client = OpenAI(</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">　　api_key="你的钥匙",</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">　　base_url="https://api.moonshot.cn/v1"</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">)</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf=""></span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#94A3B8;"><span leaf=""># 问它一句话</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">resp = client.chat.completions.create(</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">　　model="kimi-k3",</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">　　messages=[{"role": "user", "content": "用一句话解释 KDA"}]</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">)</span></p>
+        <p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:13px;line-height:1.6;color:#E2E8F0;"><span leaf="">print(resp.choices[0].message.content)</span></p>
+      </section>
+    </section>
+    <section style="border-left:2px solid #E4E4E7;padding:12px 0 12px 20px;margin:0 0 24px;">
+      <p style="font-size:13px;color:#A1A1AA;margin:0;line-height:1.8;text-align:justify;">
+        <span leaf="">旁注：示意代码，需替换 api_key，model 名以官方文档为准。</span>
+      </p>
+    </section>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 11. 第八章 08 国内三家怎么选 -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">08</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">THREE DOMESTIC ROUTES</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">国内三家怎么选</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">把 K3 放回国内坐标系：最近两年，头部 AI 其实走了三条不同的路。看懂这三条路，比盯着单个榜单更有用——它决定你该把赌注压在谁身上。</span>
+    </p>
+    <section style="display:flex;margin:0 0 28px;">
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">01</span></p>
+        <p style="font-size:14px;font-weight:800;color:#27272A;margin:0 0 4px;line-height:1.4;"><span leaf="">DeepSeek</span></p>
+        <p style="font-size:11px;color:#71717A;margin:0 0 8px;line-height:1.5;"><span leaf="">省钱王</span></p>
+        <p style="font-size:12px;color:#52525B;margin:0;line-height:1.6;"><span leaf="">用最少的钱，做到够好</span></p>
+      </section>
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;margin-right:8px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">02</span></p>
+        <p style="font-size:14px;font-weight:800;color:#27272A;margin:0 0 4px;line-height:1.4;"><span leaf="">智谱</span></p>
+        <p style="font-size:11px;color:#71717A;margin:0 0 8px;line-height:1.5;"><span leaf="">全能选手</span></p>
+        <p style="font-size:12px;color:#52525B;margin:0;line-height:1.6;"><span leaf="">啥都自己搞，连国产芯片都适配</span></p>
+      </section>
+      <section style="flex:1;border-top:2px solid #27272A;padding:18px 12px 16px;">
+        <p style="font-size:11px;color:#A1A1AA;margin:0 0 8px;letter-spacing:1px;font-weight:500;"><span leaf="">03</span></p>
+        <p style="font-size:14px;font-weight:800;color:#27272A;margin:0 0 4px;line-height:1.4;"><span leaf="">Kimi</span></p>
+        <p style="font-size:11px;color:#71717A;margin:0 0 8px;line-height:1.5;"><span leaf="">长跑冠军</span></p>
+        <p style="font-size:12px;color:#52525B;margin:0;line-height:1.6;"><span leaf="">专攻记得久、读得多</span></p>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">三条路没有对错，只是赌注不同：</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">DeepSeek 赌省钱</span></span><span leaf="">，用更少的钱做到够好；</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">智谱赌全栈</span></span><span leaf="">，从模型到芯片一起抓；</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">Kimi 赌记性</span></span><span leaf="">，KDA 是这条路的钥匙。</span>
+    </p>
+    <section style="border-left:3px solid #52525B;padding:16px 0 16px 24px;margin:0 0 28px;">
+      <p style="font-size:16px;font-weight:700;color:#27272A;margin:0;line-height:1.7;letter-spacing:0.5px;">
+        <span leaf="">「对开发者而言，三种便宜又好用的取舍」</span>
+      </p>
+    </section>
+    <p style="margin-bottom:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">想省钱选 DeepSeek，要国产全套选智谱，要读超长东西选 Kimi。开源图纸陆续放出，等于把这三张底牌都</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">摊到了桌面上</span></span><span leaf="">。</span>
+    </p>
+  </section>
+
+  <!-- 章节分割线 -->
+  <section style="padding:0 10px;">
+    <section style="height:1px;background:#E4E4E7;margin:0;">
+      <span leaf=""><br></span>
+    </section>
+  </section>
+
+  <!-- 12. 结语章 ∞ -->
+  <section style="margin-top:56px;margin-bottom:32px;padding:0 10px;">
+    <section style="position:relative;padding-bottom:20px;border-bottom:1px solid #E4E4E7;">
+      <p style="font-size:48px;font-weight:900;color:#E4E4E7;margin:0;line-height:1;letter-spacing:-2px;">
+        <span leaf="">∞</span>
+      </p>
+      <section style="margin-top:-8px;">
+        <p style="font-size:10px;color:#A1A1AA;font-weight:500;letter-spacing:3px;margin:0 0 6px;text-transform:uppercase;">
+          <span leaf="">THE END</span>
+        </p>
+        <h3 style="font-size:20px;font-weight:800;color:#27272A;margin:0;letter-spacing:0.5px;line-height:1.4;">
+          <span leaf="">写在最后</span>
+        </h3>
+      </section>
+    </section>
+    <p style="margin-bottom:22px;margin-top:22px;font-size:15px;line-height:1.8;text-align:justify;color:#52525B;letter-spacing:0.3px;">
+      <span leaf="">K3 的意义，不在于它比谁强了多少，而在于它把「开源 = 差」这个旧观念，</span><span style="border-bottom:2px solid #52525B;font-weight:600;color:#27272A;"><span leaf="">撕开了一个口子</span></span><span leaf="">。当顶尖能力开始以开源方式流动，受益的是所有想用 AI 的人。</span>
+    </p>
+    <section style="border-left:3px solid #52525B;padding:16px 0 16px 24px;margin:0 0 28px;">
+      <p style="font-size:16px;font-weight:700;color:#27272A;margin:0;line-height:1.7;letter-spacing:0.5px;">
+        <span leaf="">「开源顶级 AI 的拐点，可能就从 7 月 27 日开始」</span>
+      </p>
+    </section>
+  </section>
+
+  <!-- 13. END 分割线 -->
+  <section style="padding:0 10px;">
+    <section style="text-align:center;margin:0 0 36px;">
+      <section style="display:flex;align-items:center;justify-content:center;">
+        <span style="height:1px;width:48px;background:#E4E4E7;margin-right:16px;"><span leaf=""><br></span></span>
+        <span style="font-size:10px;color:#A1A1AA;letter-spacing:4px;font-weight:500;"><span leaf="">END</span></span>
+        <span style="height:1px;width:48px;background:#E4E4E7;margin-left:16px;"><span leaf=""><br></span></span>
+      </section>
+    </section>
+  </section>
+
+  <!-- 14. 尾部作者签名 -->
+  <section style="padding:0 10px 24px;">
+    <section style="border-top:1px solid #E4E4E7;padding-top:28px;">
+      <p style="margin-bottom:16px;font-size:15px;line-height:1.8;color:#52525B;text-align:justify;">
+        <span leaf="">我是 {{作者名}}，{{一句话简介，如：热衷于分享 AI 观察与干货}}。</span>
+      </p>
+      <p style="margin-bottom:0;font-size:15px;line-height:1.8;color:#52525B;text-align:justify;">
+        <span leaf="">如果你觉得今天这篇有收获，欢迎</span>
+        <strong style="color:#27272A;"><span leaf="">点赞、在看、转发</span></strong>
+        <span leaf="">三连，我们下篇见。</span>
+      </p>
+    </section>
+  </section>
+
+</section>
+
+  </div>
+</div>
+<script>
+  var currentVersion='pro';
+  function switchVersion(v){
+    currentVersion=v;
+    document.getElementById('pro-content').classList.toggle('active',v==='pro');
+    document.getElementById('plain-content').classList.toggle('active',v==='plain');
+    document.getElementById('btn-pro').classList.toggle('active',v==='pro');
+    document.getElementById('btn-plain').classList.toggle('active',v==='plain');
+    window.scrollTo(0,0);
+  }
+  function gzhShowToast(msg){
+    var t=document.getElementById('gzhToast');
+    t.textContent=msg;t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer=setTimeout(function(){t.classList.remove('show');},2800);
+  }
+  function gzhCopy(){
+    var el=document.getElementById(currentVersion+'-content');
+    var range=document.createRange();
+    range.selectNodeContents(el);
+    var sel=window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    var ok=false;
+    try{ok=document.execCommand('copy');}catch(e){ok=false;}
+    sel.removeAllRanges();
+    var btn=document.getElementById('gzhCopyBtn');
+    var label=currentVersion==='pro'?'专业版':'白话版';
+    if(ok){
+      gzhShowToast('✅ 已复制'+label+'！去公众号编辑器按 Ctrl/⌘+V 粘贴');
+      var old=btn.textContent;btn.textContent='✅ 已复制'+label;
+      setTimeout(function(){btn.textContent=old;},2200);
+    }else{
+      gzhShowToast('⚠ 自动复制失败，请手动全选(Ctrl/⌘+A)再复制(Ctrl/⌘+C)');
+    }
+  }
+</script>
+</body>
+</html>
