@@ -10,7 +10,7 @@
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 [![Forked From](https://img.shields.io/badge/forked%20from-isjiamu%2Fgzh--design--skill-orange)](https://github.com/isjiamu/gzh-design-skill)
-[![Maintainer](https://img.shields.io/badge/maintainer-itr--del%20%E7%8E%8B%E5%98%89%E4%BA%BF-059669)](https://github.com/itr-del)
+[![Maintainer](https://img.shields.io/badge/maintainer-%E7%8E%8B%E5%98%89%E6%A5%A0-059669)](https://github.com/itr-del)
 [![Themes](https://img.shields.io/badge/themes-6%20+%20generator-059669)](references/theme-index.md)
 
 中文 ｜ [English](README.en.md)
@@ -149,7 +149,7 @@ A：本 Fork 兼容原版所有组件库。如果你想切回原版，重新 `gi
 
 ## 📜 License
 
-**AGPL-3.0 © 2026 甲木 × 摸鱼小李（原作者）；本 fork 适配版本由 itr-del 王嘉亿 维护**
+**AGPL-3.0 © 2026 甲木 × 摸鱼小李（原作者）；本 fork 适配版本由 王嘉楠 (itr-del) 维护**
 
 本项目采用 **GNU AGPL-3.0** 协议，要点：
 
@@ -172,7 +172,7 @@ A：本 Fork 兼容原版所有组件库。如果你想切回原版，重新 `gi
 
 ### 本 Fork 维护者
 
-- **王嘉亿（itr-del）**
+- **王嘉楠（itr-del）**
 - **GitHub**：[https://github.com/itr-del/gzh-design-skill](https://github.com/itr-del/gzh-design-skill)
 - **贡献范围**：公众号发版场景适配、原作者私域信息脱敏、itr-del 公众号实战配图、文档重写
 
@@ -186,4 +186,4 @@ A：本 Fork 兼容原版所有组件库。如果你想切回原版，重新 `gi
 
 ---
 
-<sub>本 fork 适配版本 © 2026 王嘉亿 (itr-del) · 原作者 © 2026 甲木 × 摸鱼小李 · AGPL-3.0 License</sub>
+<sub>本 fork 适配版本 © 2026 王嘉楠 (itr-del) · 原作者 © 2026 甲木 × 摸鱼小李 · AGPL-3.0 License</sub>
